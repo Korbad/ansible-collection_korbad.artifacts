@@ -1,0 +1,4 @@
+- name: Ensure directory exists to house managed artifacts
+  file:
+    path: "{{ managed_artifacts_path }}"
+    state: directory
