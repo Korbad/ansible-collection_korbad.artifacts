@@ -1,0 +1,8 @@
+---
+# https://download.manjaro.org/kde/22.1.0/manjaro-kde-22.1.0-230421-linux61.iso.sha512
+manjaro_sem_version: 22.1.0
+manjaro_iso_filename: "manjaro-kde-{{ manjaro_sem_version }}-230421-linux61.iso"
+manjaro_iso_file_path: "{{ (managed_files_path, manjaro_iso_filename) | path_join }}"
+checksum_algorithm: sha512
+manjaro_checksum_filename: "{{ manjaro_iso_filename }}.{{ checksum_algorithm }}"
+manjaro_download_url_base: https://download.manjaro.org/kde

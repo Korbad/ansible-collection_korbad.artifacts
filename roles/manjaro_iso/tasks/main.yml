@@ -1,0 +1,13 @@
+---
+- name: Check for iso
+  stat:
+    path: "{{ manjaro_iso_file_path }}"
+  register: iso_stat
+
+- name: Download iso and verify checksum
+  get_url:
+    url: "{{ manjaro_download_url_base }}/{{ manjaro_sem_version }}/{{ manjaro_iso_filename }}"
+    dest: "{{ manjaro_iso_file_path }}"
+    checksum: "{{ checksum_algorithm }}:{{ manjaro_download_url_base }}/{{ manjaro_sem_version }}/{{ manjaro_checksum_filename }}"
+  register: download_result
+  when: not iso_stat.stat.exists
