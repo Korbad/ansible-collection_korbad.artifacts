@@ -1,0 +1,34 @@
+---
+- name: Ensure the directory exists for managed torrents
+  file:
+    path: "{{ (managed_torrents_path) | path_join }}"
+    state: directory
+
+- name: Ensure the directory exists for the artifacts downloaded via a torrent
+  file:
+    path: "{{ (managed_torrents_path, managed_torrent_dirname) | path_join }}"
+    state: directory
+
+- name: Add torrent to transmission
+  ansible.builtin.command:
+    argv:
+      - transmission-remote
+      - --add
+      - "{{ torrent_magnet_link }}"
+      - --download-dir
+      - "{{ managed_torrent_directory }}"
+      - --no-start-paused
+  vars:
+    managed_torrent_directory: "{{ (managed_torrents_path, managed_torrent_dirname) | path_join }}"
+  register: transmission_output
+
+- debug:
+    var: transmission_output
+
+- name: Start all torrents
+  ansible.builtin.command:
+    argv:
+      - transmission-remote
+      - --torrent
+      - all
+      - --start
