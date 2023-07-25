@@ -1,0 +1,6 @@
+---
+dependencies:
+  - role: managed_artifacts
+  - role: artifacts_via_torrent
+    torrent_magnet_link: magnet:?xt=urn:btih:436e5f8b85a51d5545156e15cc144ba1144991ff&dn=archlinux-2023.07.01-x86_64.iso
+    managed_torrent_dirname: "archlinux-version-x86_64.iso"
