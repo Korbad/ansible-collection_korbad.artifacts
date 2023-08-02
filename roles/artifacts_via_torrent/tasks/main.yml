@@ -1,13 +1,32 @@
 ---
+- name: Get the group of the current user
+  command: id -gn
+  register: current_user_group
+  changed_when: False
+
+- name: Add 'transmission' user to the current user's group
+  user:
+    name: transmission
+    groups: "{{ current_user_group.stdout }}"
+    append: yes
+  notify: restart transmission daemon
+  become: true
+
 - name: Ensure the directory exists for managed torrents
   file:
     path: "{{ (managed_torrents_path) | path_join }}"
     state: directory
+    mode: '0775'
+  notify: restart transmission daemon
 
 - name: Ensure the directory exists for the artifacts downloaded via a torrent
   file:
     path: "{{ (managed_torrents_path, managed_torrent_dirname) | path_join }}"
     state: directory
+    mode: '0775'
+  notify: restart transmission daemon
+
+- meta: flush_handlers
 
 - name: Add torrent to transmission
   ansible.builtin.command:
